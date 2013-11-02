@@ -5,14 +5,12 @@ import dbus
 import traceback
 
 from dbus.mainloop.glib import DBusGMainLoop
-from collections import namedtuple
 
 GEOCLUE2_BUS_NAME = 'org.freedesktop.GeoClue2'
 MANAGER_INTERFACE_NAME = GEOCLUE2_BUS_NAME + '.Manager'
 CLIENT_INTERFACE_NAME = GEOCLUE2_BUS_NAME + '.Client'
 LOCATION_INTERFACE_NAME = GEOCLUE2_BUS_NAME + '.Location'
 DBUS_PROPERTIES_INTERFACE_NAME = 'org.freedesktop.DBus.Properties'
-
 
 def get_client():
     '''
