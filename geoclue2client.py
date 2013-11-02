@@ -17,7 +17,7 @@ DBUS_PROPERTIES_INTERFACE_NAME = 'org.freedesktop.DBus.Properties'
 def get_client():
     '''
     Interfaces with DBus and initializes a client object that will be
-    used to interface with GeoClue2
+    used to obtain GeoClue2 client object
     '''
     try: 
         global system_bus, client_object
@@ -39,36 +39,42 @@ def get_client():
         return (traceback.print_exc())  
 
 def set_distance_threshold(threshold):
+    '''
+    Sets a distance threshold for GeoClue2 client. Whenever the distance 
+    between the new location and old location is >= to the threshold, a 
+    LocationUpdated signal is emitted by GeoClue2.
+    '''
     client_props = dbus.Interface(client_object, DBUS_PROPERTIES_INTERFACE_NAME)
     client_props.Set(CLIENT_INTERFACE_NAME,
                         'DistanceThreshold', dbus.UInt32(threshold))
 
 def start_client(signal_handler, threshold=1000):
     '''
-    Starts GeoClue2 client which signals user's location_updated_callback
-    whenever distance between new location and old location is >= to 
-    the distance_threshold. by default, threshold is set to 1000 meters
+    Starts GeoClue2 client with a default distance threshold of 1000 meters
     '''
     global location_updated_user_handler, iclient
     try:
         # set threshold for updating location (and triggering callback)
         set_distance_threshold(threshold);
 
-        # connect location_updated callback to user's 
+        # set user-defined handler for getting location updates
         location_updated_user_handler = signal_handler
         
-        # connect callback function to 'LocationUpdated' signal
+        # connect handler to GeoClue's LocationUpdated signal
         system_bus.add_signal_receiver(location_updated_handler, 
                 dbus_interface = CLIENT_INTERFACE_NAME, 
                 signal_name = "LocationUpdated")
         
-        # start client
+        # use client object to get client interface & start client
         iclient = dbus.Interface(client_object, dbus_interface=CLIENT_INTERFACE_NAME)
         iclient.Start()
     except dbus.DBusException:
         return (traceback.print_exc())
     
 def stop_client():
+    '''
+    Stops GeoClue2 client
+    '''
     try:
         iclient.Stop()
     except dbus.DBusException:
@@ -76,9 +82,8 @@ def stop_client():
 
 def location_updated_handler(previous_location, new_location):
     '''
-    When GeoClue2 LocationUpdated signal is emitted, this callback 
-    function is trigger and fetchs the new/current location data
-    This data is then passed on to the user-defined callback function
+    Handler for when GeoClue2 LocationUpdated signal is emitted. It fetchs 
+    the new/current location and passes it to the user-defined handler
     '''
     try:                       
         # get GeoClue2's location object and pull its properties
@@ -101,6 +106,8 @@ def location_updated_handler(previous_location, new_location):
     except dbus.DBusException:
         return (traceback.print_exc())
 
+# below is example code for how to interface with the GeoClue2 client
+# the handler simply prints out the location information once & quits
 def my_location_handler(latitude, longitude, accuracy, description):
     print "Latitude = " + str(latitude)
     print "Longitude = " + str(longitude)
