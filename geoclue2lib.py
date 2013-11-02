@@ -108,11 +108,13 @@ class GeoClueLib:
 
 import gobject
 
+loop = None
+
 def main():
+    global loop
     locator = GeoClueLib()
     locator.start_client(my_callback)
     loop = gobject.MainLoop()
-    gobject.timeout_add(10000, loop.quit)
     loop.run()
     locator.stop_client()
     
@@ -121,6 +123,7 @@ def my_callback(current_location):
     print "Longitude = " + str(current_location.longitude)
     print "Accuracy = " + str(current_location.accuracy)
     print "Description = " + str(current_location.description)
+    loop.quit()
 
 if  __name__ =='__main__':
     main()
