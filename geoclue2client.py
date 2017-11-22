@@ -107,10 +107,10 @@ def location_updated_handler(previous_location, new_location):
 # below is example code for how to interface with the GeoClue2 client
 # the handler simply prints out the location information once & quits
 def my_location_handler(latitude, longitude, accuracy, description):
-    print "Latitude = " + str(latitude)
-    print "Longitude = " + str(longitude)
-    print "Accuracy = " + str(accuracy)
-    print "Description = " + str(description)
+    print("Latitude = " + str(latitude))
+    print("Longitude = " + str(longitude))
+    print("Accuracy = " + str(accuracy))
+    print("Description = " + str(description))
     stop_client()
     loop.quit()
 

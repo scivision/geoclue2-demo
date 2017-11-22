@@ -75,15 +75,15 @@ class Geoclue2Demo:
         self.view.set_property("zoom-level", self.spinbutton.get_value_as_int())
 
     def map_zoom_changed(self, widget, value):
-		self.spinbutton.set_value(self.view.get_property("zoom-level"))
+        self.spinbutton.set_value(self.view.get_property("zoom-level"))
 
     def view_state_changed(self, view, paramspec, image):
         state     = view.get_state()
         if state == Champlain.State.LOADING:
-			image.set_from_stock(Gtk.STOCK_NETWORK, Gtk.IconSize.BUTTON)
+            image.set_from_stock(Gtk.STOCK_NETWORK, Gtk.IconSize.BUTTON)
         else:
             image.clear()
-		
+
     def place_marker(self, latitude, longitude, description):
         orange = Clutter.Color.new(0xf3, 0x94, 0x07, 0xbb)
         layer = Champlain.MarkerLayer()
@@ -95,7 +95,7 @@ class Geoclue2Demo:
                 ", ".join(lines[1:]) + "</span>"
         elif (len(lines) == 0):
             markup_string = lines[0].strip()
-            
+
         marker = Champlain.Label.new_with_text(
             markup_string, "Serif 14", None, orange)
         marker.set_use_markup(True)
@@ -112,10 +112,10 @@ class Geoclue2Demo:
         geoclue2client.start_client(self.my_location_handler)
 
     def my_location_handler(self, latitude, longitude, accuracy, description):
-        print "Latitude = " + str(latitude)
-        print "Longitude = " + str(longitude)
-        print "Accuracy = " + str(accuracy)
-        print "Description = " + str(description)
+        print("Latitude = " + str(latitude))
+        print("Longitude = " + str(longitude))
+        print("Accuracy = " + str(accuracy))
+        print("Description = " + str(description))
         geoclue2client.stop_client()
         self.place_marker(latitude, longitude, description)
 
