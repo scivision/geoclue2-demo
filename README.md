@@ -27,5 +27,12 @@ GUI
 `geoclue2client.py` is based on
 
 * [dbus python tutorial](http://dbus.freedesktop.org/doc/dbus-python/doc/tutorial.html)
-* [geoclue2demo](https://github.com/parinporecha/GeoClue2-Locator-pythonhttps://github.com/parinporecha/GeoClue2-Locator-python)
+* [geoclue2demo](https://github.com/parinporecha/GeoClue2-Locator-python)
 * [libchamplain](https://projects.gnome.org/libchamplain/)
+
+
+### TODO
+
+> DBusException: org.freedesktop.DBus.Error.AccessDenied: 'DesktopId' property must be set
+
+Python API needs updating to this new Geocode2 requirement.
